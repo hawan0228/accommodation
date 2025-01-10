@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>住宿預訂系統</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        // 切換 iframe 顯示
+        function showIframe(frameName) {
+            const frames = ['dataFrame', 'searchFrame', 'recommendFrame', '01Frame', 'cFrame', 'filter'];
+            // 隱藏所有 iframe
+            frames.forEach(frame => {
+                const iframe = document.getElementById(frame);
+                if (iframe) {
+                    iframe.style.display = 'none';
+                }
+            });
+
+            // 顯示指定的 iframe
+            const targetFrame = document.getElementById(frameName);
+            if (targetFrame) {
+                targetFrame.style.display = 'block';
+            } else {
+                console.error('指定的 iframe 不存在:', frameName);
+            }
+        }
+
+        // 搜索表單提交後顯示搜索結果
+        function submitSearchForm() {
+            const form = document.getElementById('searchForm');
+            form.submit();
+            showIframe('searchFrame');
+        }
+
+        // 篩選表單提交後顯示篩選結果
+        function showFilterFrame() {
+            showIframe('filter');
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h2>住宿預訂系統</h2>
+        <form action="search.php" method="get" target="searchFrame" id="searchForm">
+            <div class="search">
+                <input type="text" placeholder="搜尋" name="searching">
+                <button type="submit" style="display:none;" onclick="submitSearchForm()"></button>
+                <span class="icon" onclick="document.getElementById('searchForm').submit();">
+                    <ion-icon name="search-sharp"></ion-icon>
+                </span>
+            </div>
+        </form>        
+    </header>
+    <nav class="navigation">
+        <a href="javascript:void(0);" onclick="showIframe('dataFrame')">住宿資訊</a>
+        <a href="javascript:void(0);" onclick="showIframe('recommendFrame')">查看推薦</a>
+        <a href="javascript:void(0);" onclick="showIframe('01Frame')">查看預定</a>
+        <a href="javascript:void(0);" onclick="showIframe('cFrame')">系統維護</a>
+    </nav>
+    <div class="container">
+        <aside>
+            <form id="filterform" method="GET" action="filter.php" target="filter" onsubmit="showFilterFrame()">
+                <div class="category-group">
+                    <div class="category-title">依住宿類型</div>
+                    <div class="category-item"><label><input type="checkbox" name="type[]" value="國際觀光旅館">國際觀光旅館</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="type[]" value="星級旅館">星級旅館</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="type[]" value="旅館">一般旅館</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="type[]" value="民宿">民宿</label></div>
+                </div>
+                <div class="category-group">
+                    <div class="category-title">依設備類型</div>
+                    <div class="category-item"><label><input type="checkbox" name="facility[]" value="WiFi">WiFi</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="facility[]" value="停車場">停車場</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="facility[]" value="餐廳">供餐</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="facility[]" value="獨立空調">獨立空調</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="facility[]" value="接駁車">接駁車</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="facility[]" value="寵物友善">寵物友善</label></div>
+                </div>
+                <div class="category-group">
+                    <div class="category-title">價位</div>
+                    <div class="category-item"><label><input type="checkbox" name="price[]" value="3000">3000以內</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="price[]" value="5000">5000以內</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="price[]" value="7000">7000以內</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="price[]" value="9000">9000以內</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="price[]" value="9001">9000以上</label></div>
+                </div>
+                <div class="category-group">
+                    <div class="category-title">評價</div>
+                    <div class="category-item"><label><input type="checkbox" name="star[]" value="5">5顆星</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="star[]" value="4.5">4.5顆星以上</label></div>
+                    <div class="category-item"><label><input type="checkbox" name="star[]" value="4">4顆星以上</label></div>
+                </div>
+                <div class="button-container">
+                    <button type="reset">取消</button>
+                    <button type="submit">送出</button>
+                </div>
+            </form>
+        </aside>
+        <main>
+            <iframe id="dataFrame" name="dataFrame" src="data.php" width="100%" height="600px"></iframe>
+            <iframe id="searchFrame" name="searchFrame" src="search.php" width="100%" height="600px" style="display:none;"></iframe>
+            <iframe id="recommendFrame" name="recommendFrame" src="recommend.php" width="100%" height="600px" style="display:none;"></iframe>
+            <iframe id="01Frame" name="01Frame" src="01.php" width="100%" height="600px" style="display:none;"></iframe>
+            <iframe id="cFrame" name="cFrame" src="10.php" width="100%" height="600px" style="display:none;"></iframe>
+            <iframe id="filter" name="filter" src="filter.php" width="100%" height="600px" style="display:none;"></iframe>
+        </main>
+    </div>
+    <footer>
+        <div class="footer">
+            聯絡我們
+            <ul>
+                <li>E-mail: "A1125508@mail.nuk.edu.tw/A1125511@mail.nuk.edu.tw</li>
+                <li>電話:091234578 </li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>
